@@ -1,13 +1,12 @@
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Asyncify.Test
 {
-    [TestClass]
     public class VariableAccessAnalyzerFixTest : BaseAnalyzerFixTest
     {
-        [TestMethod]
+        [Fact]
         public void CanFindMethodNotUsingTapWithVariable()
         {
             var expected = GetResultWithLocation(11, 22);
@@ -29,7 +28,7 @@ namespace Asyncify.Test
         var result = await temp;
     }", expected);
         }
-        [TestMethod]
+        [Fact]
         public void WillWrapVariableInParenthesesIfNeeded()
         {
             var expected = GetResultWithLocation(11, 22);
@@ -52,7 +51,7 @@ namespace Asyncify.Test
     }", expected);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanFindViolationInMethodUsingTap()
         {
             var expected = GetResultWithLocation(11, 22);
@@ -67,7 +66,7 @@ namespace Asyncify.Test
     }", expected);
         }
 
-        [TestMethod]
+        [Fact]
         public void DoesNotViolateOnLackOfTapUseWithinLock()
         {
             VerifyCodeWithReturn(@"
@@ -82,7 +81,7 @@ namespace Asyncify.Test
     }", EmptyExpectedResults);
         }
 
-        [TestMethod]
+        [Fact]
         public void DoesNotViolateOnMethodsWithOutOrRef()
         {
             VerifyCodeWithReturn(@"
@@ -94,7 +93,7 @@ namespace Asyncify.Test
     }", EmptyExpectedResults);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanFixVariableAccessInLambda()
         {
             VerifyCodeFixWithReturn(@"
@@ -120,7 +119,7 @@ namespace Asyncify.Test
     }", GetResultWithLocation(13, 26));
         }
 
-        [TestMethod]
+        [Fact]
         public void CanFindMethodNotUsingTapWithVariableInBraces()
         {
             var expected = GetResultWithLocation(11, 22);

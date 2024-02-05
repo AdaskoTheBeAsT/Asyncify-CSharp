@@ -1,14 +1,13 @@
 ﻿using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Asyncify.Test
 {
-    [TestClass]
     public class InvocationAnalyzerFixTest : BaseAnalyzerFixTest
     {
         //No diagnostics expected to show up
-        [TestMethod]
+        [Fact]
         public void DoesNotViolateOnCorrectUseOfTap()
         {
             VerifyCodeWithReturn(@"
@@ -24,7 +23,7 @@ namespace Asyncify.Test
         }
 
         //No diagnostics expected to show up
-        [TestMethod]
+        [Fact]
         public void DoesNotViolateOnNonTapUseWithinLock()
         {
             VerifyCodeWithReturn(@"
@@ -47,7 +46,7 @@ namespace Asyncify.Test
     }", EmptyExpectedResults);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanFindMethodNotUsingTap()
         {
             VerifyCodeWithReturn(@"
@@ -66,7 +65,7 @@ namespace Asyncify.Test
     }", GetResultWithLocation(10, 22));
         }
 
-        [TestMethod]
+        [Fact]
         public void CanFindViolationInMethodUsingTap()
         {
             VerifyCodeWithReturn(@"
@@ -77,7 +76,7 @@ namespace Asyncify.Test
     }", GetResultWithLocation(11, 22));
         }
 
-        [TestMethod]
+        [Fact]
         public void DoesNotViolateOnMethodsWithOutOrRef()
         {
             VerifyCodeWithReturn(@"
@@ -88,7 +87,7 @@ namespace Asyncify.Test
     }", EmptyExpectedResults);
         }
 
-        [TestMethod]
+        [Fact]
         public void DoesNotAddAwaitToVoidMethods()
         {
             VerifyCodeWithReturn(@"
@@ -98,7 +97,7 @@ namespace Asyncify.Test
     }", EmptyExpectedResults);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanFindMethodWhenUsingBraces()
         {
             VerifyCodeWithReturn(@"
@@ -117,7 +116,7 @@ namespace Asyncify.Test
     }", GetResultWithLocation(10, 23));
         }
 
-        [TestMethod]
+        [Fact]
         public void NoViolationOnAsyncMethodsWrappedInVoidCall()
         {
             VerifyCSharpDiagnostic(string.Format(FormatCode, @"
@@ -132,7 +131,7 @@ public Task Test()
 }", string.Empty), EmptyExpectedResults);
         }
 
-        [TestMethod]
+        [Fact]
         public void FixIsAppliedUpCallTree()
         {
             var oldSource = string.Format(FormatCode, @"
@@ -172,7 +171,7 @@ public async System.Threading.Tasks.Task<int> Test()
 
 
 
-        [TestMethod]
+        [Fact]
         public void FixIsAppliedUpCallTreeStopsAtOutRefParams()
         {
             var oldSource = string.Format(FormatCode, @"
@@ -212,7 +211,7 @@ public async System.Threading.Tasks.Task<int> Test()
             VerifyCSharpFix(oldSource, newSource);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestCodeFixWithReturnType()
         {
             var oldSource = string.Format(FormatCode, @"
@@ -230,7 +229,7 @@ public async System.Threading.Tasks.Task<int> Test()
             VerifyCSharpFix(oldSource, newSource);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestCodeFixWithInstanceCall()
         {
             var oldSource = string.Format(FormatCode, @"
@@ -248,7 +247,7 @@ public async System.Threading.Tasks.Task Test()
             VerifyCSharpFix(oldSource, newSource);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestCodeFixWithinLambda()
         {
             var oldSource = string.Format(FormatCode, @"
@@ -266,7 +265,7 @@ public void Test()
             VerifyCSharpFix(oldSource, newSource);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestCodeFixWithinParenthesizedLambda()
         {
             var oldSource = string.Format(FormatCode, @"
@@ -294,7 +293,7 @@ public async System.Threading.Tasks.Task<int> CallAsync()
             VerifyCSharpFix(oldSource, newSource);
         }
 
-        [TestMethod]
+        [Fact]
         public void FixWillWrapInParenthesesIfNeeded()
         {
             var oldSource = string.Format(FormatCode, @"
@@ -312,7 +311,7 @@ public async System.Threading.Tasks.Task Test()
             VerifyCSharpFix(oldSource, newSource);
         }
 
-        [TestMethod]
+        [Fact]
         public void WillAddAsyncToVoidMethodInCodefix()
         {
             var oldSource = string.Format(FormatCode, @"
@@ -339,8 +338,8 @@ public async System.Threading.Tasks.Task Test()
 }", string.Empty);
             VerifyCSharpFix(oldSource, newSource);
         }
-        
-        [TestMethod]
+
+        [Fact]
         public void TestRefactoringOverInterfaces()
         {
             VerifyCSharpFix(@"

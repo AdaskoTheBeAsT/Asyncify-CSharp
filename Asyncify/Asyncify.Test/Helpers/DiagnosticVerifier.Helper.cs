@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TestHelper
 {
@@ -58,10 +57,8 @@ namespace TestHelper
             var diagnostics = new List<Diagnostic>();
             foreach (var project in projects)
             {
-                var compilation = project.GetCompilationAsync().Result;
-                CheckForCompilationErrors(documents, compilation);
+                var compilationWithAnalyzers = project.GetCompilationAsync().Result.WithAnalyzers(ImmutableArray.Create(analyzer));
 
-                var compilationWithAnalyzers = compilation.WithAnalyzers(ImmutableArray.Create(analyzer));
 
                 var diags = compilationWithAnalyzers.GetAnalyzerDiagnosticsAsync().Result;
                 foreach (var diag in diags)
@@ -97,7 +94,7 @@ namespace TestHelper
 
             if (compilerDiagnostics.Any())
             {
-                Assert.Fail(@"Compilation errors in code: 
+                throw new Exception(@"Compilation errors in code: 
 " + string.Join("\r\n", compilerDiagnostics.Select(x => x.GetMessage())) + @"
 
 Code compiled:
@@ -169,7 +166,6 @@ Code compiled:
             var solution = new AdhocWorkspace()
                 .CurrentSolution
                 .AddProject(projectId, TestProjectName, TestProjectName, language)
-                .WithProjectCompilationOptions(projectId, new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
                 .AddMetadataReference(projectId, CorlibReference)
                 .AddMetadataReference(projectId, SystemCoreReference)
                 .AddMetadataReference(projectId, CSharpSymbolsReference)
