@@ -3,11 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asyncify", "Asyncify\Asyncify\Asyncify.csproj", "{C15B2F4D-99C3-4833-A9D0-32FFD969C248}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asyncify", "Asyncify\Asyncify\Asyncify.csproj", "{C15B2F4D-99C3-4833-A9D0-32FFD969C248}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asyncify.Test", "Asyncify\Asyncify.Test\Asyncify.Test.csproj", "{081DE494-482A-4B63-8C58-3FF52B548258}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asyncify.Test", "Asyncify\Asyncify.Test\Asyncify.Test.csproj", "{081DE494-482A-4B63-8C58-3FF52B548258}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asyncify.Vsix", "Asyncify\Asyncify.Vsix\Asyncify.Vsix.csproj", "{86D26DFA-92B1-4F33-B350-F3302CD80239}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".props", ".props", "{D49BA511-0F4A-48D8-ABCD-3929E6690303}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		Asyncify.sln.DotSettings.user = Asyncify.sln.DotSettings.user
+		LICENSE.MD = LICENSE.MD
+		nuget.config = nuget.config
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
